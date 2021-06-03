@@ -1,0 +1,20 @@
+COMMON:
+  SAVEPATH: ./log/test
+  GPUS: [6]
+  SEED: 42
+
+DATA:
+  NAME: flower_photos
+  INPUTSIZE: 64
+  BATCHSIZE: 16
+  NUMWORKER: 8
+
+MODEL:
+  BASEMODEL: xception
+  NUMCLASSES: 5
+  FREEZE: true
+
+TRAIN:
+  OPTIMIZER: adam
+  LEARNINGRATE: 0.001
+  EPOCHS: 5
