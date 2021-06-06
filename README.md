@@ -72,6 +72,6 @@ pip install -r requirements.txt
 
 ## To Do List
 - [ ] Multi GPU
-    - pretrained model 에 적용이 안되는 현상 발견.
+    - pretrained model 에 적용이 안되는 현상 발견. -> DP
 - [ ] Inference code
 - [ ] Segmentation

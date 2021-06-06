@@ -28,7 +28,7 @@ def eval(epoch, model, optimizer, criterion, dataloader, metrics, device, params
                 
                 batch_image, batch_label = batch_image.to(device), batch_label.type(torch.long).to(device)            
                 predictions = model(batch_image)
-                print(predictions.shape, batch_label.shape)
+
                 # Calculate Loss
                 loss = criterion(predictions, batch_label)
                 summ["loss_val"] += loss.item()
