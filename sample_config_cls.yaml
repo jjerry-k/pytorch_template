@@ -7,10 +7,10 @@ DATA:
   NAME: flower_photos
   INPUTSIZE: 64
   BATCHSIZE: 16
-  NUMWORKER: 8
+  NUMWORKER: 2
 
 MODEL:
-  BASEMODEL: xception
+  BASEMODEL: resnet18
   NUMCLASSES: 5
   FREEZE: true
 

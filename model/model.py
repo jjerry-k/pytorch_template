@@ -47,6 +47,7 @@ class Model(nn.Module):
             for param in self.base_model.parameters():
                 param.requires_grad = False
 
+        # To extract feature dimension
         self.base_model.eval()
         with torch.no_grad():
             test_input  = torch.empty(1, 3, 224, 224)

@@ -22,4 +22,4 @@ def load_checkpoint(checkpoint, model, optimizer=None, map_location=None):
     if optimizer:
         optimizer.load_state_dict(checkpoint['optim_dict'])
 
-    return checkpoint
+    return model, checkpoint, optimizer
