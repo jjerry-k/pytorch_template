@@ -2,21 +2,10 @@ import numpy as np
 
 import torch
 import torch.nn as nn
-import pretrainedmodels
-from efficientnet_pytorch import EfficientNet
 
-available_models = [
-    "efficientnet-b0", "efficientnet-b1", "efficientnet-b2", "efficientnet-b3", "efficientnet-b4", 
-    "efficientnet-b5", "efficientnet-b6", "efficientnet-b7", 
-    "alexnet", "vgg11", "vgg11_bn", "vgg13", "vgg13_bn", "vgg16", "vgg16_bn", "vgg19_bn", "vgg19",
-    "densenet121", "densenet169", "densenet201", "densenet161",
-    "resnet18", "resnet34", "resnet50", "resnet101", "resnet152", "resnext101_32x4d", "resnext101_64x4d", 
-    "squeezenet1_0", "squeezenet1_1", "nasnetamobile", "nasnetalarge", 
-    "dpn68", "dpn68b", "dpn92", "dpn98", "dpn131", 
-    "senet154", "se_resnet50", "se_resnet101", "se_resnet152", "se_resnext50_32x4d", "se_resnext101_32x4d",
-    "inceptionv4", "inceptionresnetv2", "xception", "fbresnet152", "bninception",
-    "cafferesnet101", "pnasnet5large", "polynet"
-]
+import timm
+
+available_models = timm.list_models()
 
 class Model(nn.Module):
     """
@@ -32,40 +21,15 @@ class Model(nn.Module):
         self.num_classes = num_classes
         self.freeze = freeze
         
-        if "efficientnet" in base_model_name:
-            self.base_model = EfficientNet.from_pretrained(base_model_name)
-            self.feature_extractor = self.base_model.extract_features
-            
-        else:
-            self.base_model = pretrainedmodels.__dict__[base_model_name](num_classes=1000)
-            if "_features" in dir(self.base_model):
-                self.feature_extractor = self.base_model._features
-            else:
-                self.feature_extractor = self.base_model.features
+        self.model = timm.create_model('mobilenetv2_100', pretrained=True, num_classes=10)
         
         if freeze: 
-            for param in self.base_model.parameters():
-                param.requires_grad = False
-
-        # To extract feature dimension
-        self.base_model.eval()
-        with torch.no_grad():
-            test_input  = torch.empty(1, 3, 224, 224)
-            dims = self.feature_extractor(test_input).size()
-        self.base_model.train()
-
-        layer_list = []
-        if len(dims)>2:
-            layer_list.append(nn.AdaptiveAvgPool2d((1, 1)))
-            layer_list.append(nn.Flatten())
-        layer_list.append(nn.Dropout())
-        layer_list.append(nn.Linear(dims[1], num_classes))
+            for layer_name, ops in self.model.named_children():
+                if layer_name != 'classifier':
+                    ops.requires_grad = False
         
-        self.classifier = nn.Sequential(*layer_list)
-
     def forward(self, x):
-        x = self.feature_extractor(x)
-        x = self.classifier(x)
+        x = self.model(x)
         return x
 
 # class Conv_Block(nn.Module):

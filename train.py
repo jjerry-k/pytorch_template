@@ -50,7 +50,7 @@ def main(config):
     SAVEPATH = os.path.join("./log", config["DATA"]["NAME"], DATE)
     os.makedirs(SAVEPATH)
     utils.set_logger(os.path.join(SAVEPATH, "train.log"))
-    write_yaml(os.path.join(SAVEPATH, "config.yaml"), config)
+    utils.write_yaml(os.path.join(SAVEPATH, "config.yaml"), config)
 
     # DATA LOADING
     logging.info(f'Loading {config["DATA"]["NAME"]} datasets')
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     
     # Load config file
     args = parser.parse_args()
-    config = config_parser(args.config)
+    config = utils.config_parser(args.config)
 
     # Execute main function
     main(config)

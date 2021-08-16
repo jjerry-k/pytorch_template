@@ -13,7 +13,6 @@ cycler==0.10.0
 decorator==5.0.6
 defusedxml==0.7.1
 docker-pycreds==0.4.0
-efficientnet-pytorch==0.7.0
 entrypoints==0.3
 et-xmlfile==1.0.1
 gitdb==4.0.7
@@ -56,7 +55,6 @@ parso==0.8.2
 pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==8.2.0
-pretrainedmodels==0.7.4
 prometheus-client==0.10.1
 promise==2.3
 prompt-toolkit==3.0.18
@@ -84,6 +82,7 @@ subprocess32==3.5.4
 terminado==0.9.4
 testpath==0.4.4
 threadpoolctl==2.1.0
+timm==0.4.12
 tornado==6.1
 tqdm==4.60.0
 traitlets==5.0.5
