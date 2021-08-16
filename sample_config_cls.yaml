@@ -1,20 +1,20 @@
 COMMON:
   SAVEPATH: ./log/test
-  GPUS: [6]
+  GPUS: [0]
   SEED: 42
 
 DATA:
-  NAME: flower_photos
-  INPUTSIZE: 64
-  BATCHSIZE: 16
+  NAME: dogbreed
+  INPUTSIZE: 256
+  BATCHSIZE: 64
   NUMWORKER: 2
 
 MODEL:
-  BASEMODEL: resnet18
-  NUMCLASSES: 5
+  BASEMODEL: efficientnet_b0
+  NUMCLASSES: 121
   FREEZE: true
 
 TRAIN:
-  OPTIMIZER: adam
+  OPTIMIZER: sgd
   LEARNINGRATE: 0.001
   EPOCHS: 5

@@ -15,13 +15,13 @@ class Model(nn.Module):
     def __init__(self, base_model_name="alexnet", num_classes=10, freeze=True):
         super(Model, self).__init__()
 
-        assert base_model_name in available_models, f"Available pretrained model list: {available_models}"
+        assert base_model_name in available_models, f"Please Check available pretrained model list at https://rwightman.github.io/pytorch-image-models/results/"
         
         self.base_model_name = base_model_name
         self.num_classes = num_classes
         self.freeze = freeze
         
-        self.model = timm.create_model('mobilenetv2_100', pretrained=True, num_classes=10)
+        self.model = timm.create_model(self.base_model_name, pretrained=True, num_classes=num_classes)
         
         if freeze: 
             for layer_name, ops in self.model.named_children():
