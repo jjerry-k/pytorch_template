@@ -3,12 +3,17 @@ import json
 import logging
 
 def save_dict_to_json(metrics, json_path, is_best=None):
-    encoding = "w" if not os.path.exists(json_path) or is_best else "a"
-
-    with open(json_path, encoding) as f:
-        # We need to convert the values to float for json (it doesn't accept np.array, np.float, )
-        metrics = {key: float(value) for key, value in metrics.items()}
-        json.dump(metrics, f, indent=4)
+    cond = False if (not os.path.exists(json_path)) else True
+    metrics = {key: float(value) for key, value in metrics.items()}
+    if cond:
+        with open(json_path, "r") as tmp_f:
+            data = json.load(tmp_f)
+        data.update({metrics["epoch"]: metrics})
+    else: 
+        data = {metrics["epoch"]: metrics}
+        
+    with open(json_path, "w") as f:
+        json.dump(data, f, indent=4)
 
 def set_logger(path, remove=True):
     

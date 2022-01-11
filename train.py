@@ -42,12 +42,10 @@ def main(config):
     os.environ["CUDA_VISIBLE_DEVICES"]= ",".join(str(gpu) for gpu in config["COMMON"]["GPUS"])
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    curr_date = datetime.datetime.now()
-    year, month, day = curr_date.year, curr_date.month, curr_date.day
-    hour, minute, second = curr_date.hour, curr_date.minute, curr_date.second
-    DATE = f"{year:04d}-{month:02d}-{day:02d}-{hour:02d}-{minute:02d}-{second:02d}"
+    DATE = datetime.datetime.now().strftime("%Y_%m_%d/%H_%M_%S")
     
-    SAVEPATH = os.path.join("./log", config["DATA"]["NAME"], DATE)
+    SAVEPATH = os.path.join(config["COMMON"]["SAVEPATH"], DATE)
+    config["COMMON"]["SAVEPATH"] = SAVEPATH
     os.makedirs(SAVEPATH)
     utils.set_logger(os.path.join(SAVEPATH, "train.log"))
     utils.write_yaml(os.path.join(SAVEPATH, "config.yaml"), config)
@@ -56,6 +54,13 @@ def main(config):
     logging.info(f'Loading {config["DATA"]["NAME"]} datasets')
     transform = [transforms.RandomHorizontalFlip(), transforms.RandomRotation(15)]
     loader = trainer.Dataloader(config["DATA"])
+    # check configuration & real
+    num_classes = len(loader["train"].dataset.classes)
+    assert num_classes == config["MODEL"]["NUMCLASSES"], f'Number of class is not same!\nIn Directory: {num_classes}\nIn Configuration: {config["MODEL"]["NUMCLASSES"]}'
+
+    # PREPROCESSING
+    # Add New class
+    # Add New data 
 
     # MODEL BUILD
     logging.info(f"Building model")
@@ -83,7 +88,7 @@ def main(config):
         metrics_string = " ; ".join(f"{key}: {value:05.3f}" for key, value in metrics_summary.items())
         logging.info(f"[{epoch+1}/{EPOCHS}] Performance: {metrics_string}")
 
-        is_best = metrics_summary['loss_val'] <= best_val_loss
+        is_best = metrics_summary['val_loss'] <= best_val_loss
 
         utils.save_checkpoint({'epoch': epoch + 1,
                                 'state_dict': net.state_dict(),
@@ -93,7 +98,7 @@ def main(config):
         
         if is_best:
             logging.info("Found new best loss !")
-            best_val_loss = metrics_summary['loss_val']
+            best_val_loss = metrics_summary['val_loss']
 
             best_json_path = os.path.join(
                 SAVEPATH, "metrics_best.json")
@@ -103,7 +108,8 @@ def main(config):
             SAVEPATH, "metrics_history.json")
         utils.save_dict_to_json(metrics_summary, last_json_path)
 
-        # TODO: EARLY STOP
+    # Data version control
+
     logging.info(f"Training done !")
 
 

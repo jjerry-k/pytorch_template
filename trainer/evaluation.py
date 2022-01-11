@@ -13,10 +13,10 @@ def eval(epoch, model, optimizer, criterion, dataloader, metrics, device, params
     }
 
     summ = {
-        "loss_val": 0
+        "val_loss": 0
     }
 
-    summ.update({f"{metric}_val":0 for metric in metrics})
+    summ.update({f"val_{metric}":0 for metric in metrics})
 
     # Training 1 Epoch
     with tqdm(total=len(dataloader)) as t:
@@ -31,13 +31,13 @@ def eval(epoch, model, optimizer, criterion, dataloader, metrics, device, params
 
                 # Calculate Loss
                 loss = criterion(predictions, batch_label)
-                summ["loss_val"] += loss.item()
+                summ["val_loss"] += loss.item()
 
                 # Calculate Metrics
                 predictions = predictions.cpu().detach().numpy()
                 batch_label = batch_label.cpu().detach().numpy()
                 for metric, fn in metrics.items():
-                    summ[f"{metric}_val"] += fn(predictions, batch_label)
+                    summ[f"val_{metric}"] += fn(predictions, batch_label)
 
                 t.set_postfix({key: f"{val/(i+1):05.3f}"for key, val in summ.items()})
                 t.update()

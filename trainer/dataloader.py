@@ -35,12 +35,12 @@ class BaseDataset(Dataset):
     # For classification 
 
     def __init__(self, data_dir, transform):
-        
+        IMG_FORMAT = ["jpg", "jpeg", "bmp", "png", "tif", "tiff"]
         self.filelist = []
         self.classes = sorted(os.listdir(data_dir))
         for root, sub_dir, files in os.walk(data_dir):
             if not len(files): continue
-            files = [os.path.join(root, file) for file in files if file.endswith("jpg")]
+            files = [os.path.join(root, file) for file in files if file.split(".")[-1] in IMG_FORMAT]
             self.filelist += files
         self.transform = transform
 
@@ -63,7 +63,7 @@ def Dataloader(config, transform=None):
     dataloaders = {}
 
     for split in ['train', 'validation']:
-        path = os.path.join("./data/", config["NAME"], split)
+        path = os.path.join(config["ROOT"], config["NAME"], split)
         transform_list = [transforms.Resize(input_size), transforms.ToTensor()]
         if split == 'train':
             transform_list = transform_list.insert(1, transform) if transform else transform_list

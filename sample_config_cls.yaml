@@ -1,20 +1,21 @@
 COMMON:
-  SAVEPATH: ./log/test
+  SAVEPATH: ./log
   GPUS: [0]
   SEED: 42
 
 DATA:
-  NAME: dogbreed
-  INPUTSIZE: 256
-  BATCHSIZE: 64
-  NUMWORKER: 2
+  ROOT: /home/coder/hdd/private/for_wandb/artifact_example/data
+  NAME: cifar10
+  INPUTSIZE: 64
+  BATCHSIZE: 128
+  NUMWORKER: 32
 
 MODEL:
   BASEMODEL: efficientnet_b0
-  NUMCLASSES: 121
+  NUMCLASSES: 8
   FREEZE: true
 
 TRAIN:
   OPTIMIZER: sgd
   LEARNINGRATE: 0.001
-  EPOCHS: 5
+  EPOCHS: 2
