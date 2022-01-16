@@ -44,7 +44,7 @@ def main(config):
 
     DATE = datetime.datetime.now().strftime("%Y_%m_%d/%H_%M_%S")
     
-    SAVEPATH = os.path.join(config["COMMON"]["SAVEPATH"], DATE)
+    SAVEPATH = os.path.join(config["COMMON"]["SAVEPATH"], config["DATA"]["NAME"], DATE)
     config["COMMON"]["SAVEPATH"] = SAVEPATH
     os.makedirs(SAVEPATH)
     utils.set_logger(os.path.join(SAVEPATH, "train.log"))
@@ -54,6 +54,7 @@ def main(config):
     logging.info(f'Loading {config["DATA"]["NAME"]} datasets')
     transform = [transforms.RandomHorizontalFlip(), transforms.RandomRotation(15)]
     loader = trainer.Dataloader(config["DATA"])
+    
     # check configuration & real
     num_classes = len(loader["train"].dataset.classes)
     assert num_classes == config["MODEL"]["NUMCLASSES"], f'Number of class is not same!\nIn Directory: {num_classes}\nIn Configuration: {config["MODEL"]["NUMCLASSES"]}'
