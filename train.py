@@ -65,7 +65,7 @@ def main(config):
 
     # MODEL BUILD
     logging.info(f"Building model")
-    net = model.Model(config["MODEL"]["BASEMODEL"], config["MODEL"]["NUMCLASSES"], config["MODEL"]["FREEZE"]).to(device)
+    net = model.Model(config["MODEL"]["BASEMODEL"], config["MODEL"]["NUMCLASSES"], config["MODEL"]["FREEZE"], use_arcface=config["MODEL"]["ARCFACE"]).to(device)
     # net = model.Model(num_classes=config["MODEL"]["NUMCLASSES"]).to(device)
     
     if torch.cuda.is_available() and len(config["COMMON"]["GPUS"]) > 1:

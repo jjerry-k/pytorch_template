@@ -44,13 +44,11 @@ conda create -y -n torch python=3.7
 conda activate torch
 
 # CPU mode
-pip install torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 pip install -r requirements.txt
 
 # GPU mode
-# Please execute after installing cuda11
-conda install -y -c pytorch cudatoolkit=11.0 # if using conda
-pip install torch==1.7.1+cu110 torchvision==0.8.2+cu110 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+pip install --no-cache-dir torch torchvision torchaudio
 pip install -r requirements.txt
 ```
 
@@ -59,8 +57,8 @@ pip install -r requirements.txt
 
 ### Classification
 1. Download example dataset 
-    - Flower: https://drive.google.com/file/d/1mDq2Oqwx_inTMUznA5KhiGtYOA3Vs_hb/view?usp=sharing
-    - Cats & Dogs: https://drive.google.com/file/d/1uIWfyF8R6-WeumTSU4M0YuYw2X_QIfn8/view?usp=sharing
+    - Flower: https://drive.google.com/file/d/1tGUTmiwltOelsGG2kby2r_sYPDRth-2T/view?usp=sharing
+    - Cats & Dogs: https://drive.google.com/file/d/1uIWfyF8R6-WeumTSU4M0YuYw2X_QIfn8/view?usp=share_link
     - Dog Breed: https://drive.google.com/file/d/14FUyv7TzRq7T0r-ouwB9sdYOTPG22HIX/view?usp=sharing
 2. Unzip dataset in `data` directory
 3. Edit `config.yaml`

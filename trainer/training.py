@@ -25,7 +25,7 @@ def train(epoch, model, optimizer, criterion, dataloader, metrics, device, param
         for i, (batch_image, batch_label) in enumerate(dataloader):
             
             batch_image, batch_label = batch_image.to(device), batch_label.type(torch.long).to(device)
-            predictions = model(batch_image)
+            predictions = model(batch_image, batch_label)
             
             # Calculate Loss
             loss = criterion(predictions, batch_label)

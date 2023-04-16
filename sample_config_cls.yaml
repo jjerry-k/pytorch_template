@@ -4,18 +4,19 @@ COMMON:
   SEED: 42
 
 DATA:
-  ROOT: /home/coder/hdd/private/for_wandb/artifact_example/data
-  NAME: cifar10
+  ROOT: ./data
+  NAME: flower_photos
   INPUTSIZE: 64
-  BATCHSIZE: 128
-  NUMWORKER: 32
+  BATCHSIZE: 64
+  NUMWORKER: 2
 
 MODEL:
   BASEMODEL: efficientnet_b0
-  NUMCLASSES: 8
+  NUMCLASSES: 5
   FREEZE: true
+  ARCFACE: true
 
 TRAIN:
-  OPTIMIZER: sgd
+  OPTIMIZER: adam
   LEARNINGRATE: 0.001
   EPOCHS: 2
